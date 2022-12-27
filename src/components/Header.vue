@@ -15,6 +15,7 @@
               single-line
               v-model="keyword"
               label="ニュースを検索"
+              v-on:keydown.enter="searchResource(keyword)"
             ></v-text-field>
           </div>
       </v-app-bar>
@@ -29,7 +30,7 @@
         >
           <v-list-item-group v-model="group">
             <v-list-item>
-              <v-list-item-title @click="searchResource(keyword)">home</v-list-item-title>
+              <v-list-item-title @click="setResource('headLines')">HeadLines</v-list-item-title>
             </v-list-item>
             <v-list-item>
               <v-list-item-title @click="setResource('sport')">sport</v-list-item-title>

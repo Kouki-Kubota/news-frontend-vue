@@ -1,36 +1,54 @@
-
+import { getHomeNewsApi } from "../../api/getApi";
 import { changeCategory } from "../../api/getApi";
 import { searchCategory } from "../../api/searchApi";
 
 // initial state
 const state = () => ({
     newsData: {
-      "home": {},
+      "headLines": {},
       "sport": {},
-      "business": [],
-      "technology": [],
-      "science": [],
-      "entertainment": [],
+      "business": {},
+      "technology": {},
+      "science": {},
+      "entertainment": {},
+      "search": {}
     },
-    activeCategory: "home",
+    activeCategory: "headLines",
     bookmarkData:[]
 })
 
 const article_id_list = {
-  business: 0,
-  entertainment: 20,
-  technology: 40,
-  sciense: 60
+  headLines: 0,
+  business: 20,
+  entertainment: 40,
+  technology: 60,
+  sciense: 80,
+  search: 100
 }
 
 // action
 const actions = {
   //activecategoryのニュースを取得
   async getArticles({commit, state}){
+    
     const category = state.activeCategory
+    
     if(state.newsData[category].length){
       return false
-    }else{
+    }
+    
+    //headlinesの時はトピックのニュースを取得するため、カテゴリとは異なるAPIを呼び出す
+    if(category === "headLines"){
+      const new_articles = await getHomeNewsApi()
+      const article_data = new_articles.map((article, index)=>{
+        const start_index = article_id_list[category]
+        article.id = index + start_index
+        article.bookmark = false
+        return article
+      })
+      commit('setArticles', {data: article_data, category: category})
+      return new_articles
+    }else {
       const new_articles = await changeCategory(category)
       const article_data = new_articles.map((article, index)=>{
         const start_index = article_id_list[category]
@@ -38,16 +56,14 @@ const actions = {
         article.bookmark = false
         return article
       })
-      console.log("article_data", article_data)
-      console.log("サイドバーです")
       commit('setArticles', {data: article_data, category: category})
       return new_articles
     }
   },
   //検索のアクション
-  async searchArticles({commit, state}){
+  async searchArticles({commit, state}, { keyword }){
     const category = state.activeCategory
-      const search_articles = await searchCategory(category)
+      const search_articles = await searchCategory(keyword)
       const article_data = search_articles.map((article, index)=>{
         const start_index = article_id_list[category]
         article.id = index + start_index
@@ -56,6 +72,7 @@ const actions = {
       })
       console.log("article_data", article_data)
       console.log("検索です")
+      console.log(keyword)
       commit('setArticles', {data: article_data, category: category})
       return search_articles
   },

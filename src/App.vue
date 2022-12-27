@@ -43,10 +43,9 @@ export default {
       console.log(category)
       console.log(this.$store.state.news.activeCategory)
     },
-    async searchResource(category) {
-      await this.$store.dispatch('news/updateCategory', category)
-      this.$store.dispatch('news/searchArticles')
-      console.log(`検索${category}`)
+    async searchResource(keyword) {
+      await this.$store.dispatch('news/updateCategory', 'search')
+      this.$store.dispatch('news/searchArticles', {keyword: keyword})
       console.log(this.$store.state.news.activeCategory)
     }
   }
