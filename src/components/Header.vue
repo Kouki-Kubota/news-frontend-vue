@@ -15,7 +15,7 @@
               single-line
               v-model="keyword"
               label="ニュースを検索"
-              v-on:keydown.enter="searchResource(keyword)"
+              v-on:keydown.enter="searchResource(keyword); updateBookmarkStatus(false)"
             ></v-text-field>
           </div>
       </v-app-bar>
@@ -30,25 +30,25 @@
         >
           <v-list-item-group v-model="group">
             <v-list-item>
-              <v-list-item-title @click="setResource('headLines')">HeadLines</v-list-item-title>
+              <v-list-item-title @click="setResource('headLines'); updateBookmarkStatus(false)">HeadLines</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('sport')">sport</v-list-item-title>
+              <v-list-item-title @click="setResource('sport'); updateBookmarkStatus(false)">sport</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('business')">business</v-list-item-title>
+              <v-list-item-title @click="setResource('business'); updateBookmarkStatus(false)">business</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('technology')">tech</v-list-item-title>
+              <v-list-item-title @click="setResource('technology'); updateBookmarkStatus(false)">tech</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('science')">science</v-list-item-title>
+              <v-list-item-title @click="setResource('science'); updateBookmarkStatus(false)">science</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('entertainment')">entertainment</v-list-item-title>
+              <v-list-item-title @click="setResource('entertainment'); updateBookmarkStatus(false)">entertainment</v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title @click="setResource('bookmark')">bookmark</v-list-item-title>
+              <v-list-item-title @click="setResource('bookmark'); updateBookmarkStatus(true)">bookmark</v-list-item-title>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -73,6 +73,7 @@ export default {
   props: {
     setResource: Function,
     searchResource: Function,
+    updateBookmarkStatus: Function
   },
   methods: {
     confirmSerchContent() {

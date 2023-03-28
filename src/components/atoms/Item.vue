@@ -17,13 +17,13 @@
 
       <v-card-actions>
         <v-icon
-          @click = "toggleBookmark(); onChangeBookmark(article.id)"
-          v-if="this.bookmark==false"
+          @click = "insertBookmark(article.urlToImage, article.title, article.url)"
+          v-if = "!bookmark"
         >
             mdi-bookmark-outline
         </v-icon>
         <v-icon
-          @click = "toggleBookmark(); onChangeBookmark(article.id)"
+          @click = "deleteBookmark(article.url)"
           v-else
         >
             mdi-bookmark
@@ -43,23 +43,42 @@
   </div>
 </template>
 <script>
+import { insertBookmarkApi, deleteBookmarkApi } from "../../api/getBookmark";
+import { mapState, mapGetters } from 'vuex'
+
 export default {
   name: 'Item',
   data: function() {
     return {
-      bookmark: false
+      data: false
     }
   },
   props: {
     article: Object
   },
+  computed: {
+    ...mapState({
+      bookmarkStatus: state => state.bookmarkStatus
+    }),
+    ...mapGetters('news', {
+      bookmark: 'getBookmarkStatus'
+    })
+    // getBookmarkStatus() {
+    //   console.log(`vuexのbookmarkStatus: ${this.$store.state.bookmarkStatus}`) 
+    //   return !this.$store.state.bookmarkStatus;
+    // }
+  },
   methods: {
-    onChangeBookmark(id){
-      this.$store.dispatch('news/updateBookmark', id)
+    insertBookmark(urlToImage, title, url){
+      console.log(`urlToImage:${urlToImage}title:${title}:${url}`)
+      const insertStatus = insertBookmarkApi(urlToImage, title, url)
+      console.log(`status:${insertStatus}`)
+      return insertStatus
     },
-    toggleBookmark(){
-      this.bookmark = !this.bookmark
-      console.log(this.bookmark)
+    deleteBookmark(url) {
+      console.log(`deleteUrl${url}`)
+      const deleteStatus = deleteBookmarkApi(url)
+      return deleteStatus
     }
   }
 }
