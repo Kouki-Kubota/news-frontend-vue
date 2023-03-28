@@ -5,6 +5,7 @@
       <Header
         :setResource = "setResource" 
         :searchResource = "searchResource"
+        :updateBookmarkStatus = "updateBookmarkStatus"
       />
     </div>
     <div class="contentField">
@@ -26,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState({
-      activeCategory: state => state.news.activeCategory,
+      activeCategory: state => state.news.activeCategory
     }),
     ...mapGetters('news', {
       articles: 'getArticlesByCategory'
@@ -38,15 +39,21 @@ export default {
   },
   methods: {
     async setResource(category){
-      await this.$store.dispatch('news/updateCategory', category)
-      this.$store.dispatch('news/getArticles')
-      console.log(category)
+      await 
+      this.$store.dispatch('news/updateCategory', category)
       console.log(this.$store.state.news.activeCategory)
+      this.$store.dispatch('news/getArticles')
+      console.log("artile取れてる")
+      console.log(this.$store.state.bookmarkStatus)
     },
     async searchResource(keyword) {
-      await this.$store.dispatch('news/updateCategory', 'search')
+      await 
+      this.$store.dispatch('news/updateCategory', 'search')
       this.$store.dispatch('news/searchArticles', {keyword: keyword})
-      console.log(this.$store.state.news.activeCategory)
+    },
+    async updateBookmarkStatus(status){
+      await
+      this.$store.dispatch('news/updateBookmark', status)
     }
   }
 }
