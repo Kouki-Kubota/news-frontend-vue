@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const key = '540c0a2d08264331b2101b7c7169ed92';
+const key = 'authKey';
 let now = new Date();
 function LoadProc() {
   let year = now.getFullYear();
